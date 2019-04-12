@@ -2,26 +2,44 @@ const fs = require('fs-extra')
 const glob = require('glob');
 const { create_random_id } = require('./utils/random.js');
 
+// Options
 const default_options = {
 	path: './data/',
 	spaces: 2, // TODO: null by default?
 	random: () => create_random_id(5), // TODO: use 16 by default
 	cache: true, // TODO: use this
-	truth: 'memory' // TODO: use this
+	sync: {
+		create: false,
+		read: false,
+		update: false,
+		delete: false
+	}
 };
 
+// CardBox
 class CardBox {
 	// Init
 	constructor(options = default_options) {
 		// Options
-		this.options = Object.assign({}, default_options, options);
+		this.options = Object.assign(
+			{},
+			default_options,
+			options,
+			{ sync: Object.assign({}, default_options.sync, options.sync) }
+		);
 
 		// Path
 		this.options.path += this.options.path.endsWith("/") ? "" : "/";
 
 		// Cards
 		this.cards = {};
+
+		console.log(this.options);
 	};
+
+	card_path(path, card_id) {
+		return `${path}${card_id}.json`;
+	}
 
 	async init() {
 		return new Promise(resolve => {
@@ -39,8 +57,8 @@ class CardBox {
 			glob(`${this.options.path}**/*.json`, {}, (error, files) => {
 				if (error) console.error(error);
 
-				files.forEach(filePath => {
-					const card = fs.readJsonSync(filePath);
+				files.forEach(async filePath => {
+					const card = await fs.readJson(filePath);
 					this.cards[card.id] = card;
 				});
 
@@ -58,9 +76,9 @@ class CardBox {
 		}
 
 		return new Promise(resolve => {
-			const new_card_path = `${this.options.path}${new_card.id}.json`;
+			const new_card_path = this.card_path(this.options.path, new_card.id);
 
-			fs.outputJson(
+			fs.writeJson(
 				new_card_path,
 				new_card,
 				{ spaces: this.options.spaces },
@@ -79,12 +97,34 @@ class CardBox {
 			if (!card_id) {
 				resolve(Object.values(this.cards));
 			}
-			 resolve(this.cards[card_id]);
+			resolve(this.cards[card_id]);
 		})
 	}
 
 	// Update
+	async update(new_card) {
+		return new Promise(async resolve => {
+			const created_card = await this.create(new_card);
+			resolve(created_card);
+		});
+	}
 
+	// Delete
+	async delete(card_id) {
+		return new Promise(resolve => {
+			if (!card_id || !this.cards[card_id]) {
+				resolve(false)
+			}
+
+			const card_path = this.card_path(this.options.path, card_id);
+
+			fs.remove(card_path, error => {
+				if (error) console.error(error);
+			});
+
+			resolve(delete this.cards[card_id]);
+		});
+	}
 };
 
 module.exports = CardBox;
