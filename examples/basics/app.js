@@ -1,11 +1,20 @@
 const CardBox = require('../../src/index.js');
 const data = require('./data.js');
 
+const recreate = false;
+
 (async () => {
 	// Init
 	const cb = new CardBox();
 
 	await cb.load();
+
+	// Create
+	if (recreate) {
+		data.forEach(async card => {
+			await cb.create(card);
+		})
+	}
 
 	const created = await cb.create({
 		name: "Derp Pilkinsson",
