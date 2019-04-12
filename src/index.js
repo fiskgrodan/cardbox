@@ -57,8 +57,8 @@ class CardBox {
 			glob(`${this.options.path}**/*.json`, {}, (error, files) => {
 				if (error) console.error(error);
 
-				files.forEach(async filePath => {
-					const card = await fs.readJson(filePath);
+				files.forEach(filePath => {
+					const card = fs.readJsonSync(filePath);
 					this.cards[card.id] = card;
 				});
 

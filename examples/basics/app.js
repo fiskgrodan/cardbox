@@ -5,13 +5,7 @@ const data = require('./data.js');
 	// Init
 	const cb = new CardBox();
 
-	await cb.init();
 	await cb.load();
-
-	// Create
-	data.forEach(async card => {
-		await cb.create(card);
-	})
 
 	const created = await cb.create({
 		name: "Derp Pilkinsson",
