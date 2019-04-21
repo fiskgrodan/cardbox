@@ -5,19 +5,13 @@ const { create_random_id } = require('./utils/random.js');
 // Options
 const default_options = {
 	path: './data/',
-	spaces: 2, // TODO: null by default?
-	random: () => create_random_id(5), // TODO: use 16 or 12 by default?
-	cache: true, // TODO: use this
-	autosave: true,
+	spaces: 2,
+	random: () => create_random_id(5),
 	sync: {
-		create: false,
-		read: true,
+		create: true,
+		read: false, // Not used currently
 		update: true,
 		delete: true
-	},
-	format: {
-		write: null,
-		open: null
 	}
 };
 
@@ -25,7 +19,7 @@ const default_options = {
 class CardBox {
 	constructor(options = default_options) {
 		// Options
-		this.options = Object.assign(
+		this._options = Object.assign(
 			{},
 			default_options,
 			options,
@@ -34,24 +28,21 @@ class CardBox {
 		);
 
 		// Path
-		this.options.path += this.options.path.endsWith("/") ? "" : "/";
+		this._options.path += this._options.path.endsWith("/") ? "" : "/";
 
 		// Cards
-		this.cards = {};
-
-		// Changed
-		this.changed = [];
+		this._cards = {};
 	};
 
 	// Helpers
-	card_path(path, card_id) {
+	_card_path(path, card_id) {
 		return `${path}${card_id}.json`;
 	}
 
 	// Init
-	async init() {
+	async _init() {
 		return new Promise(resolve => {
-			fs.ensureDir(this.options.path, error => {
+			fs.ensureDir(this._options.path, error => {
 				if (error) console.error(error);
 				resolve();
 			})
@@ -60,18 +51,17 @@ class CardBox {
 
 	// Load
 	async load() {
-		await this.init();
+		await this._init();
 
 		return new Promise(resolve => {
-			glob(`${this.options.path}**/*.json`, {}, (error, files) => {
+			glob(`${this._options.path}**/*.json`, {}, (error, files) => {
 				if (error) console.error(error);
 
 				files.forEach(filePath => {
 					const card = fs.readJsonSync(filePath, error => {
 						if (error) console.error(error);
-						resolve(false);
 					});
-					this.cards[card.id] = card;
+					this._cards[card.id] = card;
 				});
 
 				resolve(true);
@@ -79,50 +69,35 @@ class CardBox {
 		});
 	};
 
-	// Save
-	async save() {
-		return new Promise(resolve => {
-			this.changed.forEach(card_id => {
-				if (this.cards[card_id]) {
-					fs.writeJsonSync(
-						new_card_path,
-						new_card,
-						{ spaces: this.options.spaces },
-						error => {
-							if (error) console.error(error);
-							resolve(false);
-						});
-				}
-			})
-
-			this.changed = [];
-			resolve(true);
-		});
-	}
-
 	// Create
 	async create(
-		new_card = {}
+		new_card = {},
+		sync = this._options.sync.create
 	) {
 		if (!new_card.id) {
-			new_card.id = this.options.random();
+			new_card.id = this._options.random();
 		}
 
 		return new Promise(resolve => {
-			const new_card_path = this.card_path(this.options.path, new_card.id);
+			const new_card_path = this._card_path(this._options.path, new_card.id);
 
 			fs.writeJson(
 				new_card_path,
 				new_card,
-				{ spaces: this.options.spaces },
+				{ spaces: this._options.spaces },
 				error => {
 					if (error) console.error(error);
 
-					// TODO: create sync resolve here
+					if (sync === true) {
+						setTimeout(() => resolve(new_card));
+					}
 				});
 
-			this.cards[new_card.id] = new_card;
-			resolve(new_card);
+			this._cards[new_card.id] = new_card;
+
+			if (sync === false) {
+				setTimeout(() => resolve(new_card));
+			}
 		})
 	}
 
@@ -131,38 +106,44 @@ class CardBox {
 		return new Promise(resolve => {
 			// Read all cards
 			if (!card_id) {
-				resolve(Object.values(this.cards));
+				resolve(Object.values(this._cards));
 			}
 
 			// Read a specific card
-			resolve(this.cards[card_id]);
+			resolve(this._cards[card_id]);
 		})
 	}
 
 	// Update
-	async update(new_card) {
+	async update(new_card, sync = this._options.sync.update) {
 		return new Promise(async resolve => {
-			const created_card = await this.create(new_card);
+			const created_card = await this.create(new_card, sync);
 			resolve(created_card);
 		});
 	}
 
 	// Delete
-	async delete(card_id) {
+	async delete(card_id, sync = this._options.sync.update) {
 		return new Promise(resolve => {
-			if (!card_id || !this.cards[card_id]) {
+			if (!card_id || !this._cards[card_id]) {
 				resolve(false)
 			}
 
-			const card_path = this.card_path(this.options.path, card_id);
+			const card_path = this._card_path(this._options.path, card_id);
 
 			fs.remove(card_path, error => {
 				if (error) console.error(error);
 
-				// TODO: delete sync resolve here
+				if (sync === true) {
+					resolve(true);
+				}
 			});
 
-			resolve(delete this.cards[card_id]);
+			delete this._cards[card_id]
+
+			if (sync === false) {
+				resolve(true);
+			}
 		});
 	}
 };
