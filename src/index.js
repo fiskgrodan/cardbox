@@ -40,7 +40,7 @@ class CardBox {
 	}
 
 	// Init
-	async _init() {
+	async init() {
 		return new Promise(resolve => {
 			fs.ensureDir(this._options.path, error => {
 				if (error) console.error(error);
@@ -51,7 +51,7 @@ class CardBox {
 
 	// Load
 	async load() {
-		await this._init();
+		await this.init();
 
 		return new Promise(resolve => {
 			glob(`${this._options.path}**/*.json`, {}, (error, files) => {
