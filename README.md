@@ -5,6 +5,7 @@ The main use case is for simple demos and prototypes.
 
 ## Terminology
 **Card**: is a plain old javascript object in memory and a json-file on the filesystem.
+
 **CardBox**: is a collection of cards that can be manipulated. Cards can be created, read, updated, and deleted from the CardBox.
 
 ## Installation
