@@ -4,9 +4,8 @@ A simple in-memory database with persistant storage in json files.
 The main use case is for simple demos and prototypes.
 
 ## Terminology
-**Card**; is a plain old javascript object in memory and a json-file on the filesystem.
-
-**CardBox**; is a collection of cards that can be manipulated. **Cards** can be created, read, updated, and deleted from the **CardBox** that they are in.
+**Card**: is a plain old javascript object in memory and a json-file on the filesystem.
+**CardBox**: is a collection of cards that can be manipulated. Cards can be created, read, updated, and deleted from the CardBox.
 
 ## Installation
 1. `npm install --save cardbox`
