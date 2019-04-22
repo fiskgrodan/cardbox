@@ -1,6 +1,5 @@
-const CardBox = require('../../src/index.js');
+const CardBox = require('../../dist/cardbox.cjs.js');
 const data = require('./data.js');
-const { performance } = require('perf_hooks');
 
 const recreate = false;
 
@@ -17,13 +16,10 @@ const recreate = false;
 		})
 	}
 
-	const before = performance.now();
 	const created = await cb.create({
 		name: "Derp Pilkinsson",
 		color: "limegreen"
 	});
-	const after = performance.now();
-	console.log(after - before, 'ms');
 
 	// Read
 	const cards = await cb.read();

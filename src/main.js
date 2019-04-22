@@ -1,6 +1,6 @@
-const fs = require('fs-extra')
-const glob = require('glob');
-const { create_random_id } = require('./utils/random.js');
+import fs from "fs-extra";
+import glob from "glob";
+import { create_random_id } from "./utils/random.js";
 
 // Options
 const default_options = {
@@ -35,8 +35,8 @@ class CardBox {
 	};
 
 	// Helpers
-	_card_path(path, card_id) {
-		return `${path}${card_id}.json`;
+	_card_path(card_id) {
+		return `${this._options.path}${card_id}.json`;
 	}
 
 	// Init
@@ -79,7 +79,7 @@ class CardBox {
 		}
 
 		return new Promise(resolve => {
-			const new_card_path = this._card_path(this._options.path, new_card.id);
+			const new_card_path = this._card_path(new_card.id);
 
 			fs.writeJson(
 				new_card_path,
@@ -129,7 +129,7 @@ class CardBox {
 				resolve(false)
 			}
 
-			const card_path = this._card_path(this._options.path, card_id);
+			const card_path = this._card_path(card_id);
 
 			fs.remove(card_path, error => {
 				if (error) console.error(error);

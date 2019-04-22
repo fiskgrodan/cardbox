@@ -12,7 +12,7 @@ The main use case is for simple demos and prototypes.
 
 ## Basic example
 ```javascript
-const CardBox = require("cardbox");
+const CardBox = require('cardbox');
 
 (async () => {
 	const cb = new CardBox({ path: "./mydata/" }); // Default path is "./data/"
@@ -25,9 +25,10 @@ const CardBox = require("cardbox");
 		id: "12345",
 		name: "Namey McName"
 	});
+	console.log(namey);
 
 	// Create a card with a randomly generated "id"
-	const randy = await	cb.create({
+	const randy = await cb.create({
 		name: "Randy McRandom"
 	});
 
@@ -35,16 +36,18 @@ const CardBox = require("cardbox");
 	const users = await cb.read();
 
 	// Read a specific ucarder
-	let user = await cb.read('12345');
+	let user = await cb.read("12345");
 
 	// Update an existing card
-	user = await cb.update(Object.assign({}, user, {name: "Namey McNameFace"}));
+	user = await cb.update(Object.assign({}, user, { name: "Namey McNameFace" }));
 
 	// Upsert a new card with update
 	const new_user = await cb.update({ name: "Bronald Dingus" });
 
 	// Delete a card
 	await cb.delete("12345");
+	await cb.delete(randy.id);
+	await cb.delete(new_user.id);
 })();
 
 ```

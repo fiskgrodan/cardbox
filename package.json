@@ -1,8 +1,22 @@
 {
   "name": "cardbox",
   "version": "0.0.1",
+  "main": "dist/cardbox.cjs.js",
+  "module": "dist/cardbox.esm.js",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "node ./test/test.js"
+  },
   "dependencies": {
     "fs-extra": "^7.0.1",
     "glob": "^7.1.3"
+  },
+  "devDependencies": {
+    "cheap-watch": "^1.0.2",
+    "rollup": "^1.10.1",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-terser": "^4.0.4"
   }
 }
