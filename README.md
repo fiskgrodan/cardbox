@@ -54,10 +54,9 @@ const CardBox = require('cardbox');
 ```
 
 ## Roadmap
-1. Add rollup for building cjs and esm modules.
-2. Add tests.
-3. Add rest and a graphql examples.
-4. Publish to NPM.
+1. Add more tests.
+2. Add rest and a graphql examples.
+3. Publish to NPM.
 
 ## Possible future additions
 1. Add autosave options with an changes array and a save changes method.
