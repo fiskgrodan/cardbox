@@ -41,12 +41,7 @@ class CardBox {
 
 	// Init
 	async init() {
-		return new Promise(resolve => {
-			fs.ensureDir(this._options.path, error => {
-				if (error) console.error(error);
-				resolve();
-			})
-		})
+		await fs.ensureDir(this._options.path);
 	};
 
 	// Load
