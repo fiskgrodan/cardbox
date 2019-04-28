@@ -1,6 +1,6 @@
 const default_length = 16;
 
-const create_random_id = (length = default_length) => {
+export const create_random_id = (length = default_length) => {
 	if (length <= 0 || typeof length !== 'number') {
 		length = default_length;
 	}
@@ -12,8 +12,4 @@ const create_random_id = (length = default_length) => {
 	}
 
 	return new_id;
-}
-
-module.exports = {
-	create_random_id
 }

@@ -25,14 +25,6 @@ const watch = async () => {
   });
 	await dist_watch.init();
 	dist_watch.on('+', async () => await test());
-	
-	// // Watch test specs changes
-	// const specs_watch = new CheapWatch({ 
-  //   dir: './test/specs', 
-  //   debounce: 0
-  // });
-	// await specs_watch.init();
-	// specs_watch.on('+', async () => await test());
 }
 
 watch();
