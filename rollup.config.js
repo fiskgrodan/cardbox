@@ -4,14 +4,14 @@ import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 export default [
-  {
+	{
 		input: 'src/main.js',
-    output: [
-      { file: pkg.main, format: 'cjs' },
-      { file: pkg.module, format: 'es' }
+		output: [
+			{ file: pkg.main, format: 'cjs' },
+			{ file: pkg.module, format: 'es' }
 		],
 		plugins: [
-      resolve(),
+			resolve(),
 			commonjs(),
 			terser()
 		],
