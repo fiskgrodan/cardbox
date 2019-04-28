@@ -6,7 +6,7 @@ import { create_random_id } from "./utils/random.js";
 const default_options = {
 	path: './data/',
 	spaces: 2,
-	random: () => create_random_id(5),
+	random: () => create_random_id(6),
 	sync: {
 		create: true,
 		read: false, // Not used currently
@@ -41,12 +41,7 @@ class CardBox {
 
 	// Init
 	async init() {
-		return new Promise(resolve => {
-			fs.ensureDir(this._options.path, error => {
-				if (error) console.error(error);
-				resolve();
-			})
-		})
+		await fs.ensureDir(this._options.path);
 	};
 
 	// Load
@@ -71,34 +66,20 @@ class CardBox {
 
 	// Create
 	async create(
-		new_card = {},
-		sync = this._options.sync.create
+		new_card = {}
 	) {
 		if (!new_card.id) {
 			new_card.id = this._options.random();
 		}
 
-		return new Promise(resolve => {
-			const new_card_path = this._card_path(new_card.id);
+		this._cards[new_card.id] = new_card;
 
-			fs.writeJson(
-				new_card_path,
-				new_card,
-				{ spaces: this._options.spaces },
-				error => {
-					if (error) console.error(error);
-
-					if (sync === true) {
-						setTimeout(() => resolve(new_card));
-					}
-				});
-
-			this._cards[new_card.id] = new_card;
-
-			if (sync === false) {
-				setTimeout(() => resolve(new_card));
-			}
-		})
+		await fs.writeJson(
+			this._card_path(new_card.id),
+			new_card,
+			{ spaces: this._options.spaces });
+		
+		return new_card;
 	}
 
 	// Read
