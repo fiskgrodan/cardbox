@@ -78,7 +78,7 @@ class CardBox {
 			this._card_path(new_card.id),
 			new_card,
 			{ spaces: this._options.spaces });
-		
+
 		return new_card;
 	}
 
