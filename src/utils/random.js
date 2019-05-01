@@ -1,5 +1,7 @@
+const default_length = 16;
+
 // Returns a string of X random hexadecimal uppercase characters
-export const create_random_id = (length = 16) => {
+export const create_random_id = (length = default_length) => {
 	if (length <= 0 || typeof length !== 'number') {
 		length = default_length;
 	}
