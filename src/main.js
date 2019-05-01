@@ -41,7 +41,7 @@ class CardBox {
 		await this.init();
 
 		return new Promise(resolve => {
-			glob(`${this._options.path}**/*.json`, {}, (_, files) => {
+			glob(`${this._options.path}**/*.json`, {}, async (_, files) => {
 				await Promise.all(files.map(async file_path => {
 					const card = await fs.readJson(file_path);
 					this._cards[card.id] = card;
@@ -92,13 +92,13 @@ class CardBox {
 	// Delete
 	async delete(card_id) {
 		if (!card_id || !this._cards[card_id]) {
-			resolve(false)
+			return false;
 		}
 
 		await fs.remove(this._card_path(card_id));
-		delete this._cards[card_id]
+		delete this._cards[card_id];
 
-		return true
+		return true;
 	}
 };
 
