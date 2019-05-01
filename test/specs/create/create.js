@@ -1,6 +1,6 @@
 const assert = require("assert");
 const CardBox = require("../../../dist/cardbox.cjs.js");
-const fs = require("fs-extra")
+const fs = require("fs-extra");
 const path = require("path");
 const { generate_random_objects } = require("../../utils/random.js");
 
@@ -34,7 +34,7 @@ const test_create = async () => {
 	assert.ok(typeof randy.id === "string");
 	assert.strictEqual(randy.name, "Randy McRandom");
 
-	const file_randy = await fs.readJsonSync(path.resolve(__dirname, `./data/${randy.id}.json`));
+	const file_randy = await fs.readJson(path.resolve(__dirname, `./data/${randy.id}.json`));
 	assert.strictEqual(file_randy.name, "Randy McRandom");
 	assert.notStrictEqual(file_randy.name, "foo");
 
