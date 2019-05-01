@@ -22,10 +22,10 @@ const recreate = false;
 	});
 
 	// Read
-	const cards = await cb.read();
+	const cards = cb.read();
 	console.log(JSON.stringify(cards, null, 2));
 
-	let card = await cb.read(created.id);
+	let card = cb.read(created.id);
 	console.log(JSON.stringify(card, null, 2));
 
 	// Update

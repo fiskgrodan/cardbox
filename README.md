@@ -34,10 +34,10 @@ const CardBox = require('cardbox');
 	});
 
 	// Read all cards as an array of cards
-	const users = await cb.read();
+	const users = cb.read();
 
 	// Read a specific ucarder
-	let user = await cb.read("12345");
+	let user = cb.read("12345");
 
 	// Update an existing card
 	user = await cb.update(Object.assign({}, user, { name: "Namey McNameFace" }));

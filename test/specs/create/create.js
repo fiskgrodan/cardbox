@@ -8,7 +8,7 @@ const test_create = async () => {
 	const dir_path = path.resolve(__dirname, "./data/");
 	const cb = new CardBox({ path: dir_path });
 
-	cb.init();
+	await cb.init();
 
 	// Create a card
 	const namey = await cb.create({

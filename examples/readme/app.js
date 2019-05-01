@@ -1,10 +1,10 @@
-const CardBox = require('../../src/index.js');
+const CardBox = require('../../dist/cardbox.cjs.js');
 
 (async () => {
 	const cb = new CardBox({ path: "./mydata/" }); // Default path is "./data/"
 
 	// Load all existing card files in the path folder
-	cb.load();
+	await cb.load();
 
 	// Create a card
 	const namey = await cb.create({
@@ -19,10 +19,10 @@ const CardBox = require('../../src/index.js');
 	});
 
 	// Read all cards as an array of cards
-	const users = await cb.read();
+	const users = cb.read();
 
 	// Read a specific ucarder
-	let user = await cb.read("12345");
+	let user = cb.read("12345");
 
 	// Update an existing card
 	user = await cb.update(Object.assign({}, user, { name: "Namey McNameFace" }));
