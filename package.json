@@ -1,21 +1,40 @@
 {
-  "name": "cardbox",
-  "version": "0.0.1",
-  "main": "dist/cardbox.cjs.js",
-  "module": "dist/cardbox.esm.js",
-  "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "test": "node ./test/test.js"
-  },
-  "dependencies": {
-    "fs-extra": "^7.0.1",
-    "glob": "^7.1.3"
-  },
-  "devDependencies": {
-    "rollup": "^1.10.1",
-    "rollup-plugin-commonjs": "^9.3.4",
-    "rollup-plugin-node-resolve": "^4.2.3",
-    "rollup-plugin-terser": "^4.0.4"
-  }
+	"name": "cardbox",
+	"version": "0.0.1",
+	"description": "A JSON file based database",
+	"main": "dist/cardbox.cjs.js",
+	"module": "dist/cardbox.esm.js",
+	"scripts": {
+		"build": "rollup -c",
+		"dev": "rollup -c -w",
+		"test": "node ./test/test.js"
+	},
+	"files": [
+		"dist"
+	],
+	"keywords": [
+		"json",
+		"database"
+	],
+	"author": "fiskgrodan",
+	"license": "ISC",
+	"homepage": "https://github.com/fiskgrodan/cardbox",
+	"bugs": {
+		"url": "https://github.com/fiskgrodan/cardbox/issues",
+		"email": "fiskgrodan@hotmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/fiskgrodan/cardbox.git"
+	},
+	"dependencies": {
+		"fs-extra": "^7.0.1",
+		"glob": "^7.1.3"
+	},
+	"devDependencies": {
+		"rollup": "^1.10.1",
+		"rollup-plugin-commonjs": "^9.3.4",
+		"rollup-plugin-node-resolve": "^4.2.3",
+		"rollup-plugin-terser": "^4.0.4"
+	}
 }
